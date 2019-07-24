@@ -466,9 +466,9 @@ odata-v4-parser@0.1.13, odata-v4-parser@^0.1.13:
   version "0.1.13"
   resolved "https://registry.yarnpkg.com/odata-v4-parser/-/odata-v4-parser-0.1.13.tgz#4b5cfef0381cc39c1ca0d53c0bbc825cc655b492"
 
-"odata-v4-parser@https://github.com/SwedishAstronauts/odata-v4-parser.git":
+odata-v4-parser@SwedishAstronauts/odata-v4-parser#master:
   version "0.1.29"
-  resolved "https://github.com/SwedishAstronauts/odata-v4-parser.git#a275f976f925cb3794713b58aefa7f474882cbb1"
+  resolved "https://codeload.github.com/SwedishAstronauts/odata-v4-parser/tar.gz/5b94487440d53857ad35904235f810299a3b8aaa"
 
 odata-v4-server@rc:
   version "0.1.14"
@@ -698,9 +698,10 @@ type-is@~1.6.13:
     media-typer "0.3.0"
     mime-types "~2.1.13"
 
-typescript@^2.0.6:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.1.1.tgz#41c2b64472f529331b2055c0424862b44ce58d42"
+typescript@^3.3.3:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.5.3.tgz#c830f657f93f1ea846819e929092f5fe5983e977"
+  integrity sha512-ACzBtm/PhXBDId6a6sDJfroT2pOWt/oOnk4/dElG5G33ZL776N3Y6/6bKZJBFpd+b05F3Ct9qDjMeJmRWtE2/g==
 
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"

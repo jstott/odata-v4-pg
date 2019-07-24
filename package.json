@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/jaystack/odata-v4-pg#readme",
   "dependencies": {
-    "odata-v4-parser": "https://github.com/SwedishAstronauts/odata-v4-parser.git",
+    "odata-v4-parser": "SwedishAstronauts/odata-v4-parser#master",
     "odata-v4-sql": "^0.1.1"
   },
   "devDependencies": {
@@ -41,6 +41,6 @@
     "mocha": "^3.1.2",
     "odata-v4-server": "rc",
     "pg": "^6.1.0",
-    "typescript": "^2.0.6"
+    "typescript": "^3.3.3"
   }
 }

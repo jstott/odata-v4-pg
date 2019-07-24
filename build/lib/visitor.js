@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const odata_v4_literal_1 = require("odata-v4-literal");
 const visitor_1 = require("odata-v4-sql/lib/visitor");
 class PGVisitor extends visitor_1.Visitor {
@@ -63,6 +64,22 @@ class PGVisitor extends visitor_1.Visitor {
     VisitLiteral(node, context) {
         if (this.options.useParameters) {
             let value = odata_v4_literal_1.Literal.convert(node.value, node.raw);
+            context.literal = value;
+            this.parameters.push(value);
+            this.where += `\$${this.parameters.length}`;
+        }
+        else
+            this.where += (context.literal = visitor_1.SQLLiteral.convert(node.value, node.raw));
+    }
+    VisitInExpression(node, context) {
+        this.Visit(node.value.left, context);
+        this.where += " IN (";
+        this.Visit(node.value.right, context);
+        this.where += ":list)";
+    }
+    VisitArrayOrObject(node, context) {
+        if (this.options.useParameters) {
+            let value = node.value.value.items.map(item => item.value === 'number' ? parseInt(item.raw, 10) : item.raw);
             context.literal = value;
             this.parameters.push(value);
             this.where += `\$${this.parameters.length}`;

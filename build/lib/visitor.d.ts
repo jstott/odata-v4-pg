@@ -12,5 +12,7 @@ export declare class PGVisitor extends Visitor {
     protected VisitEqualsExpression(node: Token, context: any): void;
     protected VisitNotEqualsExpression(node: Token, context: any): void;
     protected VisitLiteral(node: Token, context: any): void;
+    protected VisitInExpression(node: Token, context: any): void;
+    protected VisitArrayOrObject(node: Token, context: any): void;
     protected VisitMethodCallExpression(node: Token, context: any): void;
 }
