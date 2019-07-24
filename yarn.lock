@@ -468,7 +468,7 @@ odata-v4-parser@0.1.13, odata-v4-parser@^0.1.13:
 
 odata-v4-parser@SwedishAstronauts/odata-v4-parser#master:
   version "0.1.29"
-  resolved "https://codeload.github.com/SwedishAstronauts/odata-v4-parser/tar.gz/5b94487440d53857ad35904235f810299a3b8aaa"
+  resolved "https://codeload.github.com/SwedishAstronauts/odata-v4-parser/tar.gz/23132a80c5b971e01008ddfe777c1f9886f4085e"
 
 odata-v4-server@rc:
   version "0.1.14"

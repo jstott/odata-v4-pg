@@ -8,14 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const pg = require("pg");
 const config = require("config");
@@ -56,17 +48,13 @@ __decorate([
     odata_v4_server_1.Edm.Double
 ], CountryLanguage.prototype, "percentage", void 0);
 let CountriesController = class CountriesController extends odata_v4_server_1.ODataController {
-    getCountries(query) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let sqlQuery = index_1.createQuery(query);
-            return (yield pool.connect()).query(sqlQuery.from("country"), sqlQuery.parameters).then(result => result.rows);
-        });
+    async getCountries(query) {
+        let sqlQuery = index_1.createQuery(query);
+        return (await pool.connect()).query(sqlQuery.from("country"), sqlQuery.parameters).then(result => result.rows);
     }
-    getCountry(code, query) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let sqlQuery = index_1.createQuery(query);
-            return (yield pool.connect()).query(`SELECT ${sqlQuery.select} FROM country WHERE code = $${sqlQuery.parameters.length + 1} AND (${sqlQuery.where})`, sqlQuery.parameters.concat([code])).then(result => result.rows[0]);
-        });
+    async getCountry(code, query) {
+        let sqlQuery = index_1.createQuery(query);
+        return (await pool.connect()).query(`SELECT ${sqlQuery.select} FROM country WHERE code = $${sqlQuery.parameters.length + 1} AND (${sqlQuery.where})`, sqlQuery.parameters.concat([code])).then(result => result.rows[0]);
     }
 };
 __decorate([
@@ -81,17 +69,13 @@ CountriesController = __decorate([
     odata_v4_server_1.odata.type(Country)
 ], CountriesController);
 let CitiesController = class CitiesController extends odata_v4_server_1.ODataController {
-    getCities(stream, query) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let sqlQuery = index_1.createQuery(query);
-            return (yield pool.connect()).query(sqlQuery.from("country"), sqlQuery.parameters).then(result => result.rows);
-        });
+    async getCities(stream, query) {
+        let sqlQuery = index_1.createQuery(query);
+        return (await pool.connect()).query(sqlQuery.from("country"), sqlQuery.parameters).then(result => result.rows);
     }
-    getCity(id, query) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let sqlQuery = index_1.createQuery(query);
-            return (yield pool.connect()).query(`SELECT ${sqlQuery.select} FROM country WHERE id = $${sqlQuery.parameters.length + 1} AND (${sqlQuery.where})`, sqlQuery.parameters.concat([id])).then(result => result.rows[0]);
-        });
+    async getCity(id, query) {
+        let sqlQuery = index_1.createQuery(query);
+        return (await pool.connect()).query(`SELECT ${sqlQuery.select} FROM country WHERE id = $${sqlQuery.parameters.length + 1} AND (${sqlQuery.where})`, sqlQuery.parameters.concat([id])).then(result => result.rows[0]);
     }
 };
 __decorate([
@@ -106,11 +90,9 @@ CitiesController = __decorate([
     odata_v4_server_1.odata.type(City)
 ], CitiesController);
 let CountryLanguagesController = class CountryLanguagesController extends odata_v4_server_1.ODataController {
-    getLanguages(stream, query) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let sqlQuery = index_1.createQuery(query);
-            return (yield pool.connect()).query(sqlQuery.from("countrylanguage"), sqlQuery.parameters).then(result => result.rows);
-        });
+    async getLanguages(stream, query) {
+        let sqlQuery = index_1.createQuery(query);
+        return (await pool.connect()).query(sqlQuery.from("countrylanguage"), sqlQuery.parameters).then(result => result.rows);
     }
 };
 __decorate([
