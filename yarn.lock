@@ -466,9 +466,9 @@ odata-v4-parser@0.1.13, odata-v4-parser@^0.1.13:
   version "0.1.13"
   resolved "https://registry.yarnpkg.com/odata-v4-parser/-/odata-v4-parser-0.1.13.tgz#4b5cfef0381cc39c1ca0d53c0bbc825cc655b492"
 
-odata-v4-parser@SwedishAstronauts/odata-v4-parser#master:
+odata-v4-parser@SwedishAstronauts/odata-v4-parser#c5c68ba11db28153a664e685d1d1e7ddb11b2c37:
   version "0.1.29"
-  resolved "https://codeload.github.com/SwedishAstronauts/odata-v4-parser/tar.gz/23132a80c5b971e01008ddfe777c1f9886f4085e"
+  resolved "https://codeload.github.com/SwedishAstronauts/odata-v4-parser/tar.gz/c5c68ba11db28153a664e685d1d1e7ddb11b2c37"
 
 odata-v4-server@rc:
   version "0.1.14"
