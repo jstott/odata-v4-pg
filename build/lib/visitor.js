@@ -36,7 +36,7 @@ class PGVisitor extends visitor_1.Visitor {
         this.select += `"${item}"`;
     }
     VisitODataIdentifier(node, context) {
-        this[context.target] += `"${node.value.name}"`;
+        this[context.target] += `"${node.value.name}.replace(/(.)([A-Z][a-z]+)/, '$1_$2').replace(/([a-z0-9])([A-Z])/, '$1_$2').toLowerCase()"`;
         context.identifier = node.value.name;
     }
     VisitEqualsExpression(node, context) {
@@ -66,7 +66,7 @@ class PGVisitor extends visitor_1.Visitor {
             let value = odata_v4_literal_1.Literal.convert(node.value, node.raw);
             context.literal = value;
             this.parameters.push(value);
-            this.where += `\$${this.parameters.length}`;
+            this.where += '?'; // `\$${this.parameters.length}`;
         }
         else
             this.where += (context.literal = visitor_1.SQLLiteral.convert(node.value, node.raw));
@@ -82,7 +82,7 @@ class PGVisitor extends visitor_1.Visitor {
             let value = node.value.value.items.map(item => item.value === 'number' ? parseInt(item.raw, 10) : item.raw);
             context.literal = value;
             this.parameters.push(value);
-            this.where += `\$${this.parameters.length}`;
+            this.where += '?'; // `\$${this.parameters.length}`;
         }
         else
             this.where += (context.literal = visitor_1.SQLLiteral.convert(node.value, node.raw));
@@ -96,7 +96,7 @@ class PGVisitor extends visitor_1.Visitor {
                 if (this.options.useParameters) {
                     let value = odata_v4_literal_1.Literal.convert(params[1].value, params[1].raw);
                     this.parameters.push(`%${value}%`);
-                    this.where += ` like \$${this.parameters.length}`;
+                    this.where += ` like += '?'`; //\$${this.parameters.length}`;
                 }
                 else
                     this.where += ` like '%${visitor_1.SQLLiteral.convert(params[1].value, params[1].raw).slice(1, -1)}%'`;
@@ -106,7 +106,7 @@ class PGVisitor extends visitor_1.Visitor {
                 if (this.options.useParameters) {
                     let value = odata_v4_literal_1.Literal.convert(params[1].value, params[1].raw);
                     this.parameters.push(`%${value}`);
-                    this.where += ` like \$${this.parameters.length}`;
+                    this.where += ` like += '?'`; // \$${this.parameters.length}`;
                 }
                 else
                     this.where += ` like '%${visitor_1.SQLLiteral.convert(params[1].value, params[1].raw).slice(1, -1)}'`;
@@ -116,7 +116,7 @@ class PGVisitor extends visitor_1.Visitor {
                 if (this.options.useParameters) {
                     let value = odata_v4_literal_1.Literal.convert(params[1].value, params[1].raw);
                     this.parameters.push(`${value}%`);
-                    this.where += ` like \$${this.parameters.length}`;
+                    this.where += ` like += '?'`; // \$${this.parameters.length}`;
                 }
                 else
                     this.where += ` like '${visitor_1.SQLLiteral.convert(params[1].value, params[1].raw).slice(1, -1)}%'`;
@@ -144,7 +144,7 @@ class PGVisitor extends visitor_1.Visitor {
                     if (this.options.useParameters) {
                         let value = odata_v4_literal_1.Literal.convert(params[0].value, params[0].raw);
                         this.parameters.push(`%${value}%`);
-                        this.where += ` like \$${this.parameters.length}`;
+                        this.where += ` like += '?'`; // \$${this.parameters.length}`;
                     }
                     else
                         this.where += ` like '%${visitor_1.SQLLiteral.convert(params[0].value, params[0].raw).slice(1, -1)}%'`;

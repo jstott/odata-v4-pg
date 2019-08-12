@@ -38,10 +38,10 @@ export class PGVisitor extends Visitor{
 		let item = node.raw.replace(/\//g, '.');
 		this.select += `"${item}"`;
 	}
-
+    
 	protected VisitODataIdentifier(node:Token, context:any){
-		this[context.target] += `"${node.value.name}"`;
-		context.identifier = node.value.name;
+		this[context.target] += `"${node.value.name}.replace(/(.)([A-Z][a-z]+)/, '$1_$2').replace(/([a-z0-9])([A-Z])/, '$1_$2').toLowerCase()"`;
+		context.identifier = node.value.name ;
 	}
 
 	protected VisitEqualsExpression(node:Token, context:any){
@@ -71,7 +71,7 @@ export class PGVisitor extends Visitor{
 			let value = Literal.convert(node.value, node.raw);
 			context.literal = value;
 			this.parameters.push(value);
-			this.where += `\$${this.parameters.length}`;
+			this.where += '?' // `\$${this.parameters.length}`;
 		}else this.where += (context.literal = SQLLiteral.convert(node.value, node.raw));
 	}
 
@@ -87,7 +87,7 @@ export class PGVisitor extends Visitor{
 			let value = node.value.value.items.map(item => item.value === 'number' ? parseInt(item.raw, 10) : item.raw);
 			context.literal = value;
 			this.parameters.push(value);
-			this.where += `\$${this.parameters.length}`;
+			this.where += '?' // `\$${this.parameters.length}`;
 		}else this.where += (context.literal = SQLLiteral.convert(node.value, node.raw));
 	}
 
@@ -100,7 +100,7 @@ export class PGVisitor extends Visitor{
 				if (this.options.useParameters){
 					let value = Literal.convert(params[1].value, params[1].raw);
 					this.parameters.push(`%${value}%`);
-					this.where += ` like \$${this.parameters.length}`;
+					this.where += ` like += '?'`; //\$${this.parameters.length}`;
 				}else this.where += ` like '%${SQLLiteral.convert(params[1].value, params[1].raw).slice(1, -1)}%'`;
 				break;
 			case "endswith":
@@ -108,7 +108,7 @@ export class PGVisitor extends Visitor{
 				if (this.options.useParameters){
 					let value = Literal.convert(params[1].value, params[1].raw);
 					this.parameters.push(`%${value}`);
-					this.where += ` like \$${this.parameters.length}`;
+					this.where += ` like += '?'`; // \$${this.parameters.length}`;
 				}else this.where += ` like '%${SQLLiteral.convert(params[1].value, params[1].raw).slice(1, -1)}'`;
 				break;
 			case "startswith":
@@ -116,7 +116,7 @@ export class PGVisitor extends Visitor{
 				if (this.options.useParameters){
 					let value = Literal.convert(params[1].value, params[1].raw);
 					this.parameters.push(`${value}%`);
-					this.where += ` like \$${this.parameters.length}`;
+					this.where += ` like += '?'`; // \$${this.parameters.length}`;
 				}else this.where += ` like '${SQLLiteral.convert(params[1].value, params[1].raw).slice(1, -1)}%'`;
 				break;
 			case "substring":
@@ -141,7 +141,7 @@ export class PGVisitor extends Visitor{
 					if (this.options.useParameters){
 						let value = Literal.convert(params[0].value, params[0].raw);
 						this.parameters.push(`%${value}%`);
-						this.where += ` like \$${this.parameters.length}`;
+						this.where += ` like += '?'`; // \$${this.parameters.length}`;
 					}else this.where += ` like '%${SQLLiteral.convert(params[0].value, params[0].raw).slice(1, -1)}%'`;
 				}else{
 					this.where += " like ";
