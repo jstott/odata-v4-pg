@@ -20,7 +20,7 @@ export function createQuery(odataQuery:string, options?:SqlOptions):Visitor;
 export function createQuery(odataQuery:Token, options?:SqlOptions):Visitor;
 export function createQuery(odataQuery:string | Token, options = <SqlOptions>{}):Visitor{
     options.type = SQLLang.PostgreSql;
-    let ast:Token = <Token>(typeof odataQuery == "string" ? query(<string>odataQuery) : odataQuery);
+    let ast:Token = <Token>(typeof odataQuery == "string" ? query(<string>odataQuery.trim()) : odataQuery);
     return new Visitor(options).Visit(ast).asType();
 }
 
