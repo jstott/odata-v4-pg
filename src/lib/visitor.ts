@@ -40,8 +40,9 @@ export class PGVisitor extends Visitor{
 	}
     
 	protected VisitODataIdentifier(node:Token, context:any){
-		this[context.target] += `"${node.value.name}.replace(/(.)([A-Z][a-z]+)/, '$1_$2').replace(/([a-z0-9])([A-Z])/, '$1_$2').toLowerCase()"`;
-		context.identifier = node.value.name ;
+		let target = node.value.name.replace(/(.)([A-Z][a-z]+)/, '$1_$2').replace(/([a-z0-9])([A-Z])/, '$1_$2').toLowerCase();
+        this[context.target] += `"${target}"`;
+        context.identifier = node.value.name;
 	}
 
 	protected VisitEqualsExpression(node:Token, context:any){
