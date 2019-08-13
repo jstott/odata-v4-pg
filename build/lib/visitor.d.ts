@@ -5,6 +5,10 @@ export declare class PGVisitor extends Visitor {
     parameters: any[];
     includes: PGVisitor[];
     constructor(options?: SqlOptions);
+    /**
+     * returns parameters as {0: 'abc', 1: '2019', ...}
+     */
+    parameterObject(): any[];
     from(table: string): string;
     protected VisitExpand(node: Token, context: any): void;
     protected VisitSelectItem(node: Token, context: any): void;

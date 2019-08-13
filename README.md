@@ -1,49 +1,48 @@
 # OData V4 Service modules - PostgreSQL Connector
 
-Service OData v4 requests from a PostgreSQL data store.
+Service OData v4 requests from a PostgreSQL data store for Objection.js (knex.js) ORM for Node.js
+
+> This is a modified and specific version of odata-v4-pg.  As work continues, this library will be moved to something more appropriately named.
 
 ## Synopsis
 The OData V4 PostgreSQL Connector provides functionality to convert the various types of OData segments
-into SQL query statements, that you can execute over a PostgreSQL database.
+into SQL query statements suitable for Objection / knex.js raw() where clause
+
+## Snake_Case conversion
+This library assumes your Nest/Objection/knex are leveraging Postgresql snake_case for table names.
+As such, OData queries for camelCase properties will be converted to snake_case automatically.
+
+## Named bindings
+In knex.js - Named bindings such as :name are interpreted as values and :name: interpreted as identifiers. Named bindings are processed so long as the value is anything other than undefined.
+
+As such, odata-v4-pg will set placeholders as :0 (index value) for all placeholders.
+This helps alleviate issues for `createDate eq null` statements, that are absent of any placeholders. With named bindings, this does not present a problem.
 
 ## Potential usage scenarios
 
-- Create high speed, standard compliant data sharing APIs
+- Nest.js & Objection.js (or direct Knex.js) library helper
+
+See the (index.spec.ts)[./src/lib/index.spec.ts] for sanity tests
 
 ## Usage as server - TypeScript
+
 ```javascript
 import { createFilter } from 'odata-v4-pg'
 
-//example request:  GET /api/Users?$filter=Id eq 42
-app.get("/api/Users", (req: Request, res: Response) => {
-    const filter = createFilter(req.query.$filter);
-    // connection instance from pg module
-    connection.query(`SELECT * FROM Users WHERE ${filter.where}`, filter.parameters, function(err, result){
-        res.json({
-        	'@odata.context': req.protocol + '://' + req.get('host') + '/api/$metadata#Users',
-        	value: result.rows
-        });
-    });
-});
+//example request/query filter:  
+const { raw } = require('objection');
+const sDay = moment.utc().startOf('day').toISOString();
+const query = { $filter: `(startDate ne null or startDate ge '${moment.utc().startOf('day').toISOString()}')`, $expand: '' };
+Object.assign(query, req.query || {});
+
+
+await Person
+  .query()
+  .where(raw(query.where, query.parameterObject()));
+}
 ```
 
-Advanced TypeScript example available [here](https://raw.githubusercontent.com/jaystack/odata-v4-mysql/master/src/example/sql.ts).
 
-## Usage ES5
-```javascript
-var createFilter = require('odata-v4-mysql').createFilter;
-
-app.get("/api/Users", function(req, res) {
-    var filter = createFilter(req.query.$filter);
-    // connection instance from pg module
-    connection.query(filter.from("Users"), filter.parameters, function(err, result){
-        res.json({
-        	'@odata.context': req.protocol + '://' + req.get('host') + '/api/$metadata#Users',
-        	value: result.rows
-        });
-    });
-})
-```
 
 ## Supported OData segments
 
