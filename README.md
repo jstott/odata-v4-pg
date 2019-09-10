@@ -9,7 +9,7 @@ The OData V4 PostgreSQL Connector provides functionality to convert the various 
 into SQL query statements suitable for Objection / knex.js raw() where clause
 
 ## Snake_Case conversion
-This library assumes your Nest/Objection/knex are leveraging Postgresql snake_case for table names.
+This library assumes your Nest/Objection/knex are leveraging Postgre snake_case for table names.
 As such, OData queries for camelCase properties will be converted to snake_case automatically.
 
 ## Named bindings
