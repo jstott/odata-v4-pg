@@ -148,6 +148,8 @@ class PGVisitor extends visitor_1.Visitor {
             case "substringof":
                 this.Visit(params[1], context);
                 if (params[0].value == "Edm.String") {
+                    // HACK - replace __ with . for table.column matching
+                    this.where = this.where.replace('__', '.');
                     if (this.options.useParameters) {
                         let value = odata_v4_literal_1.Literal.convert(params[0].value, params[0].raw);
                         this.parameters.push(`%${value}%`);

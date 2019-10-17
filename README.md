@@ -52,3 +52,11 @@ await Person
 * $top
 * $orderby
 * $expand
+
+## NPM package
+Change the version in your package.json or use npm version <new-version>.
+`npm version patch`
+
+After changing the version number in your package.json, run `npm publish` to publish the new version to NPM.
+
+`npm install` will install the latest version in the NPM repository.
