@@ -92,13 +92,15 @@ describe('createFilter', () => {
    it('substringof', () => {
     // for table.column names, fails parser, replace . with double underscore __,  and __ will be be replaced with '.',
     // and the table.column will be correctly double-quoted in where clause.
-    let filter = "substringof('10.20.0.220', 'bms_hardware_asset.ip_address')";
+    let filter = "alarmCount ne null and ( substringof('220', name)  or substringof('220', 'bms_hardware_asset.ip_address') )";
     let sql = createFilter(filter);
-    expect(sql.where).toEqual(`:0: LIKE :1`)
-    expect(sql.parameters).toHaveLength(2);
-    expect(sql.parameters[0]).toEqual('bms_hardware_asset.ip_address');
-    expect(sql.parameters[1]).toEqual('%10.20.0.220%');
-    expect(sql.parameterObject()).toEqual({ '0': 'bms_hardware_asset.ip_address', '1': '%10.20.0.220%' });
+    expect(sql.where).toEqual(`"alarm_count" IS NOT NULL AND ("name" LIKE :1 OR :2: LIKE :3)`)
+    expect(sql.parameters).toHaveLength(4);
+    expect(sql.parameters[0]).toEqual(null);
+    expect(sql.parameters[1]).toEqual('%220%');
+    expect(sql.parameters[2]).toEqual('bms_hardware_asset.ip_address');
+    expect(sql.parameters[3]).toEqual('%220%');
+    //expect(sql.parameterObject()).toEqual({ '0': 'bms_hardware_asset.ip_address', '1': '%10.20.0.220%' });
     console.log(sql.parameterObject());
     const where = raw(sql.where,sql.parameterObject());
     console.log(sql.parameterObject());

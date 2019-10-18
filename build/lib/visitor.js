@@ -146,10 +146,12 @@ class PGVisitor extends visitor_1.Visitor {
                 this.where += ")";
                 break;
             case "substringof":
+                const regex = /:\d+$/g;
                 this.Visit(params[1], context);
                 // HACK - if using column placeholder, update as :0: vs :0, objection interprets :0: as column
-                if (this.where.startsWith(':0')) {
-                    this.where = this.where.replace(':0', ':0:');
+                // this.where may include prior statements, looking for last entry of :[digits]
+                if (this.where.match(regex)) {
+                    this.where += ':';
                 }
                 if (params[0].value == "Edm.String") {
                     if (this.options.useParameters) {
