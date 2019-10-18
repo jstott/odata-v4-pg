@@ -1,6 +1,7 @@
 import { mocked } from 'ts-jest/utils'
 
 import { createFilter } from './index';
+import { raw } from 'objection';
 
 describe('createFilter', () => {
   /**
@@ -79,24 +80,30 @@ describe('createFilter', () => {
     expect(sql.parameters).toHaveLength(1);
     expect(sql.parameters[0]).toEqual('%Cus%');
   });
-  it('substringof-simple', () => {
+   it('substringof-simple', () => {
     let filter = "substringof('10.20.0.220', ip_address)";
     let sql = createFilter(filter);
     expect(sql.where).toEqual(`"ip_address" LIKE :0`)
     expect(sql.parameters).toHaveLength(1);
     expect(sql.parameters[0]).toEqual('%10.20.0.220%');
-  });
-  it('substringof', () => {
+    expect(sql.parameterObject()).toEqual({ '0': '%10.20.0.220%' });
+    //console.log(sql.parameterObject());
+  }); 
+   it('substringof', () => {
     // for table.column names, fails parser, replace . with double underscore __,  and __ will be be replaced with '.',
     // and the table.column will be correctly double-quoted in where clause.
-    let filter = "substringof('10.20.0.220', bmsHardwareAsset__ipAddress)";
+    let filter = "substringof('10.20.0.220', 'bms_hardware_asset.ip_address')";
     let sql = createFilter(filter);
-    /**expect(sql.where).toEqual(`:0 LIKE :1`)
+    expect(sql.where).toEqual(`:0: LIKE :1`)
     expect(sql.parameters).toHaveLength(2);
     expect(sql.parameters[0]).toEqual('bms_hardware_asset.ip_address');
-    expect(sql.parameters[1]).toEqual('%10.20.0.220%');*/
-    expect(sql.where).toEqual(`"bms_hardware_asset.ipaddress" LIKE :0`);  // not ipaddress vs ip_address
-    expect(sql.parameters).toHaveLength(1);
-    expect(sql.parameters[0]).toEqual('%10.20.0.220%');
-  });
+    expect(sql.parameters[1]).toEqual('%10.20.0.220%');
+    expect(sql.parameterObject()).toEqual({ '0': 'bms_hardware_asset.ip_address', '1': '%10.20.0.220%' });
+    console.log(sql.parameterObject());
+    const where = raw(sql.where,sql.parameterObject());
+    console.log(sql.parameterObject());
+   /*// expect(sql.where).toEqual(`"bms_hardware_asset.ip_address" LIKE :0`);  // not ipaddress vs ip_address
+    //expect(sql.parameters).toHaveLength(1);
+    //expect(sql.parameters[0]).toEqual('%10.20.0.220%');*/
+  }); 
 })
