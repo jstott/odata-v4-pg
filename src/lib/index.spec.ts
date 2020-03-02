@@ -15,6 +15,7 @@ describe('createFilter', () => {
     expect(sql.parameters).toHaveLength(2);
     expect(sql.parameterObject()).toEqual({ 0: 'fred', 1: 'sam' });
   });
+  
   it('date between string', () => {
     let filter = "(completedDate gt '2019-09-01' and completedDate lt '2019-10-01')";
     let sql = createFilter(filter); // map $filter OData to pgSql statement
@@ -92,20 +93,33 @@ describe('createFilter', () => {
    it('substringof', () => {
     // for table.column names, fails parser, replace . with double underscore __,  and __ will be be replaced with '.',
     // and the table.column will be correctly double-quoted in where clause.
-    let filter = "alarmCount ne null and ( substringof('220', name)  or substringof('220', 'bms_hardware_asset.ip_address') )";
+    let filter = "alarmCount ne null and ( substringof('220', name)  or substringof('120', bms_hardware_asset__ip_address) )";
     let sql = createFilter(filter);
-    expect(sql.where).toEqual(`"alarm_count" IS NOT NULL AND ("name" LIKE :1 OR :2: LIKE :3)`)
-    expect(sql.parameters).toHaveLength(4);
+    expect(sql.where).toEqual(`"alarm_count" IS NOT NULL AND ("name" LIKE :1 OR "bms_hardware_asset\"."ip_address" LIKE :2)`)
+    expect(sql.parameters).toHaveLength(3);
     expect(sql.parameters[0]).toEqual(null);
     expect(sql.parameters[1]).toEqual('%220%');
-    expect(sql.parameters[2]).toEqual('bms_hardware_asset.ip_address');
-    expect(sql.parameters[3]).toEqual('%220%');
-    //expect(sql.parameterObject()).toEqual({ '0': 'bms_hardware_asset.ip_address', '1': '%10.20.0.220%' });
+    expect(sql.parameters[2]).toEqual('%120%');
+    /*
     console.log(sql.parameterObject());
     const where = raw(sql.where,sql.parameterObject());
     console.log(sql.parameterObject());
-   /*// expect(sql.where).toEqual(`"bms_hardware_asset.ip_address" LIKE :0`);  // not ipaddress vs ip_address
-    //expect(sql.parameters).toHaveLength(1);
-    //expect(sql.parameters[0]).toEqual('%10.20.0.220%');*/
+    */
   }); 
+  it('table-column', () => {
+    let filter = "ticket__status eq 'Pending Customer'";
+    let sql = createFilter(filter); // map $filter OData to pgSql statement
+    console.log(sql.where);
+    expect(sql.where).toEqual('"ticket"."status" = :0');
+    expect(sql.parameters).toHaveLength(1);
+    expect(sql.parameterObject()).toEqual({ 0: 'Pending Customer'});
+  });
+  it('table-column_snake', () => {
+    let filter = "bmsTicket__status eq 'Pending Customer'";
+    let sql = createFilter(filter); // map $filter OData to pgSql statement
+    console.log(sql.where);
+    expect(sql.where).toEqual('"bms_ticket"."status" = :0');
+    expect(sql.parameters).toHaveLength(1);
+    expect(sql.parameterObject()).toEqual({ 0: 'Pending Customer'});
+  });
 })

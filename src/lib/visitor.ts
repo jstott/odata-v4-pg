@@ -39,16 +39,35 @@ export class PGVisitor extends Visitor {
 			this.parameterSeed = visitor.parameterSeed;
 		});
 	}
-
+	protected toSnakeCase(str:string){
+	return str &&
+	str
+	  .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+	  .map(x => x.toLowerCase())
+	  .join('_');
+	}
 	protected VisitSelectItem(node: Token, context: any) {
 		let item = node.raw.replace(/\//g, '.');
 		this.select += `"${item}"`;
 	}
 
+	/* Allow for table/column naming patterns, replace traditional "." separators with
+	 double underscore __, and identifier will be replaced with "xxx"."yyyy" for the
+	 where clause.
+	*/
 	protected VisitODataIdentifier(node: Token, context: any) {
-		let target = node.value.name.replace(/(.)([A-Z][a-z]+)/, '$1_$2').replace(/([a-z0-9])([A-Z])/, '$1_$2').toLowerCase(); // convert to snake_case
-		this[context.target] += `"${target}"`;
+
+		let colNames = node.value.name.split('__');
+		colNames = colNames.map(this.toSnakeCase);
+		if (colNames.length > 1){
+			this[context.target] += `"${colNames[0]}"."${colNames[1]}"`;
+		} else {
+			this[context.target] += `"${colNames[0]}"`;
+		}
 		context.identifier = node.value.name;
+		/* let target = node.value.name.replace(/(.)([A-Z][a-z]+)/, '$1_$2').replace(/([a-z0-9])([A-Z])/, '$1_$2').toLowerCase(); // convert to snake_case
+		this[context.target] += `"${target}"`;
+		context.identifier = node.value.name; */
 	}
 
 	protected VisitEqualsExpression(node: Token, context: any) {

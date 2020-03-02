@@ -11,6 +11,7 @@ export declare class PGVisitor extends Visitor {
     parameterObject(): any[];
     from(table: string): string;
     protected VisitExpand(node: Token, context: any): void;
+    protected toSnakeCase(str: string): string;
     protected VisitSelectItem(node: Token, context: any): void;
     protected VisitODataIdentifier(node: Token, context: any): void;
     protected VisitEqualsExpression(node: Token, context: any): void;
