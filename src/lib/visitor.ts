@@ -39,12 +39,12 @@ export class PGVisitor extends Visitor {
 			this.parameterSeed = visitor.parameterSeed;
 		});
 	}
-	protected toSnakeCase(str:string){
-	return str &&
-	str
-	  .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
-	  .map(x => x.toLowerCase())
-	  .join('_');
+	protected toSnakeCase(str: string) {
+		return str &&
+			str
+				.match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+				.map(x => x.toLowerCase())
+				.join('_');
 	}
 	protected VisitSelectItem(node: Token, context: any) {
 		let item = node.raw.replace(/\//g, '.');
@@ -59,7 +59,7 @@ export class PGVisitor extends Visitor {
 
 		let colNames = node.value.name.split('__');
 		colNames = colNames.map(this.toSnakeCase);
-		if (colNames.length > 1){
+		if (colNames.length > 1) {
 			this[context.target] += `"${colNames[0]}"."${colNames[1]}"`;
 		} else {
 			this[context.target] += `"${colNames[0]}"`;
@@ -125,9 +125,9 @@ export class PGVisitor extends Visitor {
 				this.Visit(params[0], context);
 				if (this.options.useParameters) {
 					let value = Literal.convert(params[1].value, params[1].raw);
-					this.parameters.push(`%${value}%`);
-					this.where += ` LIKE :${this.parameters.length - 1}`;
-				} else this.where += ` LIKE '%${SQLLiteral.convert(params[1].value, params[1].raw).slice(1, -1)}%'`;
+					this.parameters.push(`${value}`);
+					this.where += ` ~* :${this.parameters.length - 1}`;
+				} else this.where += ` ~* '${SQLLiteral.convert(params[1].value, params[1].raw).slice(1, -1)}'`;
 				break;
 			case "endswith":
 				this.Visit(params[0], context);
@@ -135,15 +135,15 @@ export class PGVisitor extends Visitor {
 					let value = Literal.convert(params[1].value, params[1].raw);
 					this.parameters.push(`%${value}`);
 					this.where += ` LIKE :${this.parameters.length - 1}`;
-				} else this.where += ` LIKE '%${SQLLiteral.convert(params[1].value, params[1].raw).slice(1, -1)}'`;
+				} else this.where += ` ILIKE '%${SQLLiteral.convert(params[1].value, params[1].raw).slice(1, -1)}'`;
 				break;
 			case "startswith":
 				this.Visit(params[0], context);
 				if (this.options.useParameters) {
 					let value = Literal.convert(params[1].value, params[1].raw);
 					this.parameters.push(`${value}%`);
-					this.where += ` LIKE :${this.parameters.length - 1}`;
-				} else this.where += ` LIKE '${SQLLiteral.convert(params[1].value, params[1].raw).slice(1, -1)}%'`;
+					this.where += ` ILIKE :${this.parameters.length - 1}`;
+				} else this.where += ` ILIKE '${SQLLiteral.convert(params[1].value, params[1].raw).slice(1, -1)}%'`;
 				break;
 			case "substring":
 				this.where += "SUBSTR(";
@@ -166,17 +166,17 @@ export class PGVisitor extends Visitor {
 				this.Visit(params[1], context);
 				// HACK - if using column placeholder, update as :0: vs :0, objection interprets :0: as column
 				// this.where may include prior statements, looking for last entry of :[digits]
-				if (this.where.match(regex)){
+				if (this.where.match(regex)) {
 					this.where += ':';
 				}
 				if (params[0].value == "Edm.String") {
 					if (this.options.useParameters) {
 						let value = Literal.convert(params[0].value, params[0].raw);
 						this.parameters.push(`%${value}%`);
-						this.where += ` LIKE :${this.parameters.length - 1}`;
-					} else this.where += ` LIKE '%${SQLLiteral.convert(params[0].value, params[0].raw).slice(1, -1)}%'`;
+						this.where += ` ILIKE :${this.parameters.length - 1}`;
+					} else this.where += ` ILIKE '%${SQLLiteral.convert(params[0].value, params[0].raw).slice(1, -1)}%'`;
 				} else {
-					this.where += " LIKE ";
+					this.where += " ILIKE ";
 					this.Visit(params[0], context);
 				}
 				break;

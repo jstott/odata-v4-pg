@@ -4,6 +4,18 @@ Service OData v4 requests from a PostgreSQL data store for Objection.js (knex.js
 
 > This is a modified and specific version of odata-v4-pg.  As work continues, this library will be moved to something more appropriately named.
 
+## 2.0  Breaking Changes (potential if you rely on case sensitive)
+
+OData pattern matching operators [contains, substringof, startswith, endswith] have been changed to resolve to  `ILIKE` or `~*` from `LIKE`:
+|Operator     | PG Operator   | Sample                   | 
+| ----------- | --------------| -------                  |
+| contains    | ~* (regex)    | `"status" ~* 'jen'`      |
+| substringof | ILIKE         | `"status" ILIKE '%jen%'` |
+| startswith  | ILIKE         | `"status" ILIKE 'jen%'`  |
+| endswith    | ILIKE         | `"status" ILIKE '%jen'`  |
+
+Contains with regex can perform a little better than ILIKE, your milage may certainly very.
+
 ## Synopsis
 The OData V4 PostgreSQL Connector provides functionality to convert the various types of OData segments
 into SQL query statements suitable for Objection / knex.js raw() where clause
@@ -33,12 +45,11 @@ import { createFilter } from 'odata-v4-pg'
 const { raw } = require('objection');
 const sDay = moment.utc().startOf('day').toISOString();
 const query = { $filter: `(startDate ne null or startDate ge '${moment.utc().startOf('day').toISOString()}')`, $expand: '' };
-Object.assign(query, req.query || {});
-
+const filter = createFilter(query.$filter); // map $filter OData to pgSql statement
 
 await Person
   .query()
-  .where(raw(query.where, query.parameterObject()));
+  .where(raw(filter.where, filter.parameterObject()));
 }
 ```
 

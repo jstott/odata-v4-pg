@@ -70,21 +70,22 @@ describe('createFilter', () => {
   it('startswith', () => {
     let filter = "startswith(status,'Cus')";
     let sql = createFilter(filter);
-    expect(sql.where).toEqual('"status" LIKE :0')
+    expect(sql.where).toEqual('"status" ILIKE :0')
     expect(sql.parameters).toHaveLength(1);
     expect(sql.parameters[0]).toEqual('Cus%');
   })
   it('contains', () => {
     let filter = "contains(status,'Cus')";
     let sql = createFilter(filter);
-    expect(sql.where).toEqual('"status" LIKE :0')
+    expect(sql.where).toEqual('"status" ~* :0')
     expect(sql.parameters).toHaveLength(1);
-    expect(sql.parameters[0]).toEqual('%Cus%');
+    expect(sql.parameters[0]).toEqual('Cus');
   });
+  
    it('substringof-simple', () => {
     let filter = "substringof('10.20.0.220', ip_address)";
     let sql = createFilter(filter);
-    expect(sql.where).toEqual(`"ip_address" LIKE :0`)
+    expect(sql.where).toEqual(`"ip_address" ILIKE :0`)
     expect(sql.parameters).toHaveLength(1);
     expect(sql.parameters[0]).toEqual('%10.20.0.220%');
     expect(sql.parameterObject()).toEqual({ '0': '%10.20.0.220%' });
@@ -95,7 +96,7 @@ describe('createFilter', () => {
     // and the table.column will be correctly double-quoted in where clause.
     let filter = "alarmCount ne null and ( substringof('220', name)  or substringof('120', bms_hardware_asset__ip_address) )";
     let sql = createFilter(filter);
-    expect(sql.where).toEqual(`"alarm_count" IS NOT NULL AND ("name" LIKE :1 OR "bms_hardware_asset\"."ip_address" LIKE :2)`)
+    expect(sql.where).toEqual(`"alarm_count" IS NOT NULL AND ("name" ILIKE :1 OR "bms_hardware_asset\"."ip_address" ILIKE :2)`)
     expect(sql.parameters).toHaveLength(3);
     expect(sql.parameters[0]).toEqual(null);
     expect(sql.parameters[1]).toEqual('%220%');
