@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/jstott/odata-v4-pg#readme",
   "dependencies": {
-    "odata-v4-parser": "SwedishAstronauts/odata-v4-parser#c5c68ba11db28153a664e685d1d1e7ddb11b2c37",
+    "odata-v4-parser": "jstott/odata-v4-parser#86583afa660aa135e989c5c6e8a7e0d5b56ff3c6",
     "odata-v4-sql": "^0.1.1"
   },
   "devDependencies": {

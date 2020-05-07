@@ -25,6 +25,9 @@ build/Release
 
 # Dependency directory
 node_modules
+node_modules_backup
+node_modules_swedishAstronauts
+
 
 # Optional npm cache directory
 .npm

@@ -81,6 +81,13 @@ describe('createFilter', () => {
     expect(sql.parameters).toHaveLength(1);
     expect(sql.parameters[0]).toEqual('Cus');
   });
+  /* it('in', () => {
+    let filter = "Name in ('Milk', 'Cheese', 'Donut')";
+    let sql = createFilter(filter);
+    expect(sql.where).toEqual('"Name" IN :0')
+    expect(sql.parameters).toHaveLength(1);
+    expect(sql.parameters[0]).toEqual('Milk');
+  }); */
   
    it('substringof-simple', () => {
     let filter = "substringof('10.20.0.220', ip_address)";
