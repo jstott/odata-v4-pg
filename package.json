@@ -9,7 +9,7 @@
   },
   "scripts": {
     "prebuild": "rimraf build",
-    "build": "tsc",
+    "build": "tsc --skipLibCheck",
     "pretest": "npm run build",
     "test": "jest",
     "test:watch": "jest --watch"
@@ -30,21 +30,22 @@
   },
   "homepage": "https://github.com/jstott/odata-v4-pg#readme",
   "dependencies": {
-    "odata-v4-parser": "jstott/odata-v4-parser#86583afa660aa135e989c5c6e8a7e0d5b56ff3c6",
+    "odata-v4-parser": "jstott/odata-v4-parser#v0.1.30",
     "odata-v4-sql": "^0.1.1"
   },
   "devDependencies": {
-    "@types/config": "^0.0.30",
-    "@types/jest": "^24.0.17",
-    "@types/pg": "^7.4.14",
-    "config": "^1.21.0",
-    "jest": "^24.8.0",
+    "@types/config": "^0.0.39",
+    "@types/jest": "^27.0.1",
+    "@types/pg": "^8.6.1",
+    "config": "^3.3.6",
+    "jest": "^27.1.1",
+    "knex": "^0.95.11",
     "odata-v4-server": "rc",
-    "objection": "^1.6.9",
-    "pg": "^7.12.1",
-    "rimraf": "^2.6.3",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.5.3"
+    "objection": "^2.2.15",
+    "pg": "^8.7.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.2"
   },
   "jest": {
     "moduleFileExtensions": [

@@ -49,11 +49,11 @@ __decorate([
 ], CountryLanguage.prototype, "percentage", void 0);
 let CountriesController = class CountriesController extends odata_v4_server_1.ODataController {
     async getCountries(query) {
-        let sqlQuery = index_1.createQuery(query);
+        let sqlQuery = (0, index_1.createQuery)(query);
         return (await pool.connect()).query(sqlQuery.from("country"), sqlQuery.parameters).then(result => result.rows);
     }
     async getCountry(code, query) {
-        let sqlQuery = index_1.createQuery(query);
+        let sqlQuery = (0, index_1.createQuery)(query);
         return (await pool.connect()).query(`SELECT ${sqlQuery.select} FROM country WHERE code = $${sqlQuery.parameters.length + 1} AND (${sqlQuery.where})`, sqlQuery.parameters.concat([code])).then(result => result.rows[0]);
     }
 };
@@ -63,41 +63,45 @@ __decorate([
 ], CountriesController.prototype, "getCountries", null);
 __decorate([
     odata_v4_server_1.odata.GET,
-    __param(0, odata_v4_server_1.odata.key), __param(1, odata_v4_server_1.odata.query)
+    __param(0, odata_v4_server_1.odata.key),
+    __param(1, odata_v4_server_1.odata.query)
 ], CountriesController.prototype, "getCountry", null);
 CountriesController = __decorate([
     odata_v4_server_1.odata.type(Country)
 ], CountriesController);
 let CitiesController = class CitiesController extends odata_v4_server_1.ODataController {
     async getCities(stream, query) {
-        let sqlQuery = index_1.createQuery(query);
+        let sqlQuery = (0, index_1.createQuery)(query);
         return (await pool.connect()).query(sqlQuery.from("country"), sqlQuery.parameters).then(result => result.rows);
     }
     async getCity(id, query) {
-        let sqlQuery = index_1.createQuery(query);
+        let sqlQuery = (0, index_1.createQuery)(query);
         return (await pool.connect()).query(`SELECT ${sqlQuery.select} FROM country WHERE id = $${sqlQuery.parameters.length + 1} AND (${sqlQuery.where})`, sqlQuery.parameters.concat([id])).then(result => result.rows[0]);
     }
 };
 __decorate([
     odata_v4_server_1.odata.GET,
-    __param(0, odata_v4_server_1.odata.stream), __param(1, odata_v4_server_1.odata.query)
+    __param(0, odata_v4_server_1.odata.stream),
+    __param(1, odata_v4_server_1.odata.query)
 ], CitiesController.prototype, "getCities", null);
 __decorate([
     odata_v4_server_1.odata.GET,
-    __param(0, odata_v4_server_1.odata.key), __param(1, odata_v4_server_1.odata.query)
+    __param(0, odata_v4_server_1.odata.key),
+    __param(1, odata_v4_server_1.odata.query)
 ], CitiesController.prototype, "getCity", null);
 CitiesController = __decorate([
     odata_v4_server_1.odata.type(City)
 ], CitiesController);
 let CountryLanguagesController = class CountryLanguagesController extends odata_v4_server_1.ODataController {
     async getLanguages(stream, query) {
-        let sqlQuery = index_1.createQuery(query);
+        let sqlQuery = (0, index_1.createQuery)(query);
         return (await pool.connect()).query(sqlQuery.from("countrylanguage"), sqlQuery.parameters).then(result => result.rows);
     }
 };
 __decorate([
     odata_v4_server_1.odata.GET,
-    __param(0, odata_v4_server_1.odata.stream), __param(1, odata_v4_server_1.odata.query)
+    __param(0, odata_v4_server_1.odata.stream),
+    __param(1, odata_v4_server_1.odata.query)
 ], CountryLanguagesController.prototype, "getLanguages", null);
 CountryLanguagesController = __decorate([
     odata_v4_server_1.odata.type(CountryLanguage)

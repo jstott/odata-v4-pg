@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PGVisitor = void 0;
 const odata_v4_literal_1 = require("odata-v4-literal");
 const visitor_1 = require("odata-v4-sql/lib/visitor");
 class PGVisitor extends visitor_1.Visitor {
