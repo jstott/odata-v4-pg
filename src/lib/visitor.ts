@@ -134,7 +134,7 @@ export class PGVisitor extends Visitor {
 			case "containsAny":
 				this.where += "array_to_string(";
 				this.Visit(params[0], context);
-				this.where += ", \" \")";
+				this.where += ", ' ')";
 				if (this.options.useParameters) {
 					let value = Literal.convert(params[1].value, params[1].raw);
 					this.parameters.push(`${value}`);

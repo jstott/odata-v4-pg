@@ -84,7 +84,7 @@ describe('createFilter', () => {
   it('containsAny', () => {
     let filter = "containsAny(status,'Cus')";
     let sql = createFilter(filter);
-    expect(sql.where).toEqual('array_to_string("status", " ") ~* :0')
+    expect(sql.where).toEqual(`array_to_string("status", ' ') ~* :0`)
     expect(sql.parameters).toHaveLength(1);
     expect(sql.parameters[0]).toEqual('Cus');
   });

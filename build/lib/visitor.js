@@ -133,7 +133,7 @@ class PGVisitor extends visitor_1.Visitor {
             case "containsAny":
                 this.where += "array_to_string(";
                 this.Visit(params[0], context);
-                this.where += ", \" \")";
+                this.where += ", ' ')";
                 if (this.options.useParameters) {
                     let value = odata_v4_literal_1.Literal.convert(params[1].value, params[1].raw);
                     this.parameters.push(`${value}`);
