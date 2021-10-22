@@ -71,3 +71,15 @@ Change the version in your package.json or use npm version <new-version>.
 After changing the version number in your package.json, run `npm publish` to publish the new version to NPM.
 
 `npm install` will install the latest version in the NPM repository.
+
+## Other
+
+### Build Error: odata-v4-server
+
+The latest version of odata-v4-server shows a build error as:
+
+```
+node_modules/odata-v4-server/build/lib/processor.d.ts:20:22 - error TS2415: Class 'ODataProcessor' incorrectly extends base class 'Transform'.
+  Property '_flush' is protected in type 'ODataProcessor' but public in type 'Transform'.
+```
+One workaround is  TypeScript can build project if pass option tsc --skipLibCheck, so this was added to the build scripts.  [Ref this github issue](https://github.com/jaystack/odata-v4-server/issues/35)

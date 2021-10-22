@@ -81,6 +81,13 @@ describe('createFilter', () => {
     expect(sql.parameters).toHaveLength(1);
     expect(sql.parameters[0]).toEqual('Cus');
   });
+  it('containsAny', () => {
+    let filter = "containsAny(status,'Cus')";
+    let sql = createFilter(filter);
+    expect(sql.where).toEqual('array_to_string("status", " ") ~* :0')
+    expect(sql.parameters).toHaveLength(1);
+    expect(sql.parameters[0]).toEqual('Cus');
+  });
   /* it('in', () => {
     let filter = "fred in ('Milk', 'Cheese', 'Donut')";
     let sql = createFilter(filter);
@@ -130,4 +137,13 @@ describe('createFilter', () => {
     expect(sql.parameters).toHaveLength(1);
     expect(sql.parameterObject()).toEqual({ 0: 'Pending Customer'});
   });
+
+    it('table-column_snake2', () => {
+  let filter = "bmsticketorder__shipto_address__name eq 'Daniel McDonald'";
+ let sql = createFilter(filter); // map $filter OData to pgSql statement
+console.log(sql.where);
+   expect(sql.where).toEqual('"bmsticketorder"."shipto_address"."name" = :0');
+ expect(sql.parameters).toHaveLength(1);
+ expect(sql.parameterObject()).toEqual({ 0: 'Daniel McDonald'});
+  }); 
 })

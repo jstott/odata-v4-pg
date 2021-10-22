@@ -56,11 +56,12 @@ class PGVisitor extends visitor_1.Visitor {
     VisitODataIdentifier(node, context) {
         let colNames = node.value.name.split('__');
         colNames = colNames.map(this.toSnakeCase);
-        if (colNames.length > 1) {
-            this[context.target] += `"${colNames[0]}"."${colNames[1]}"`;
-        }
-        else {
-            this[context.target] += `"${colNames[0]}"`;
+        if (colNames.length > 0) { //  this[context.target] += `"${colNames[0]}"."${colNames[1]}"`;
+            let colParsed = '';
+            colNames.forEach(col => {
+                colParsed += `"${col}".`;
+            }); // 
+            this[context.target] += colParsed.slice(0, -1); // remove the last character '.'
         }
         context.identifier = node.value.name;
         /* let target = node.value.name.replace(/(.)([A-Z][a-z]+)/, '$1_$2').replace(/([a-z0-9])([A-Z])/, '$1_$2').toLowerCase(); // convert to snake_case
@@ -121,6 +122,18 @@ class PGVisitor extends visitor_1.Visitor {
         switch (method) {
             case "contains":
                 this.Visit(params[0], context);
+                if (this.options.useParameters) {
+                    let value = odata_v4_literal_1.Literal.convert(params[1].value, params[1].raw);
+                    this.parameters.push(`${value}`);
+                    this.where += ` ~* :${this.parameters.length - 1}`;
+                }
+                else
+                    this.where += ` ~* '${visitor_1.SQLLiteral.convert(params[1].value, params[1].raw).slice(1, -1)}'`;
+                break;
+            case "containsAny":
+                this.where += "array_to_string(";
+                this.Visit(params[0], context);
+                this.where += ", \" \")";
                 if (this.options.useParameters) {
                     let value = odata_v4_literal_1.Literal.convert(params[1].value, params[1].raw);
                     this.parameters.push(`${value}`);
