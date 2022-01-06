@@ -70,8 +70,16 @@ class PGVisitor extends visitor_1.Visitor {
     }
     // path expressions specify the items to be retrieved from the JSON data
     // WHERE metadata->>'country'  ->> operator gets a JSON object field as text
-    //
+    // ensure the first columName is snake_cased, don't touch others as they are json props
     VisitJsonPathExpression(node, context) {
+        let regEx = /^[\w]+/;
+        //let stringValue: string = node.value;
+        if (regEx.test(node.value)) {
+            let firstColumnMatch = node.value.match(regEx);
+            if (firstColumnMatch && firstColumnMatch.length > 0) {
+                node.value = node.value.replace(regEx, this.toSnakeCase(firstColumnMatch[0]));
+            }
+        }
         this[context.target] += node.value;
         context.identifier = node.value;
     }

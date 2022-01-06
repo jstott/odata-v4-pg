@@ -61,10 +61,10 @@ export class PGVisitor extends Visitor {
 		colNames = colNames.map(this.toSnakeCase);
 		if (colNames.length > 0) {     //  this[context.target] += `"${colNames[0]}"."${colNames[1]}"`;
 			let colParsed = '';
-			colNames.forEach(col => {    
-				colParsed +=  `"${col}".`;
+			colNames.forEach(col => {
+				colParsed += `"${col}".`;
 			}); // 
-			this[context.target] += colParsed.slice(0,-1); // remove the last character '.'
+			this[context.target] += colParsed.slice(0, -1); // remove the last character '.'
 		}
 		context.identifier = node.value.name;
 		/* let target = node.value.name.replace(/(.)([A-Z][a-z]+)/, '$1_$2').replace(/([a-z0-9])([A-Z])/, '$1_$2').toLowerCase(); // convert to snake_case
@@ -74,9 +74,15 @@ export class PGVisitor extends Visitor {
 
 	// path expressions specify the items to be retrieved from the JSON data
 	// WHERE metadata->>'country'  ->> operator gets a JSON object field as text
-	//
-	protected VisitJsonPathExpression(node:Token, context:any){
-		
+	// ensure the first columName is snake_cased, don't touch others as they are json props
+	protected VisitJsonPathExpression(node: Token, context: any) {
+		let regEx = /^[\w]+/;
+		if (regEx.test(node.value)) {
+			let firstColumnMatch = node.value.match(regEx);
+			if (firstColumnMatch && firstColumnMatch.length > 0) {
+				node.value = node.value.replace(regEx, this.toSnakeCase(firstColumnMatch[0]));
+			}
+		}
 		this[context.target] += node.value;
 		context.identifier = node.value;
 	}

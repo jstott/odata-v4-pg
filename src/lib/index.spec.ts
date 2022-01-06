@@ -181,7 +181,7 @@ describe('createFilter', () => {
   });
 
   it('jsonb full path', () => {
-    let filter = `meta->'order'->'shipTo'->>'name' = 'Kari Driver'`;
+    let filter = `meta->'order'->'shipTo'->>'name' eq 'Kari Driver'`;
     let sql = createFilter(filter); // map $filter OData to pgSql statement
    // console.log(sql.where);
     expect(sql.where).toEqual(`meta->'order'->'shipTo'->>'name' = :0`);
@@ -190,12 +190,21 @@ describe('createFilter', () => {
   });
 
   it('jsonb contains', () => {
-    let filter = `contains(shipto->>'fred' , 'csonl')`;
+    let filter = `contains(shipto->>'fred', 'csonl')`;
     let sql = createFilter(filter); // map $filter OData to pgSql statement
    // console.log(sql.where);
    expect(sql.where).toEqual("shipto->>'fred' ~* :0")
    expect(sql.parameters).toHaveLength(1);
    expect(sql.parameters[0]).toEqual('csonl');
+  });
+
+  it('jsonb contains', () => {
+    let filter = `shiptoAddress->'order'->'shipTo'->>'name' eq 'Kari Driver'`;
+    let sql = createFilter(filter); // map $filter OData to pgSql statement
+   // console.log(sql.where);
+   expect(sql.where).toEqual("shipto_address->'order'->'shipTo'->>'name' = :0")
+   expect(sql.parameters).toHaveLength(1);
+   expect(sql.parameters[0]).toEqual('Kari Driver');
   });
 
   // 
