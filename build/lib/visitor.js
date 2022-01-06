@@ -68,6 +68,13 @@ class PGVisitor extends visitor_1.Visitor {
         this[context.target] += `"${target}"`;
         context.identifier = node.value.name; */
     }
+    // path expressions specify the items to be retrieved from the JSON data
+    // WHERE metadata->>'country'  ->> operator gets a JSON object field as text
+    //
+    VisitJsonPathExpression(node, context) {
+        this[context.target] += node.value;
+        context.identifier = node.value;
+    }
     VisitEqualsExpression(node, context) {
         this.Visit(node.value.left, context);
         this.where += " = ";
@@ -120,6 +127,16 @@ class PGVisitor extends visitor_1.Visitor {
         var method = node.value.method;
         var params = node.value.parameters || [];
         switch (method) {
+            case "whereJsonSupersetOf":
+                this.Visit(params[0], context);
+                if (this.options.useParameters) {
+                    let value = odata_v4_literal_1.Literal.convert(params[1].value, params[1].raw);
+                    this.parameters.push(`${value}`);
+                    this.where += ` ~* :${this.parameters.length - 1}`;
+                }
+                else
+                    this.where += ` ~* '${visitor_1.SQLLiteral.convert(params[1].value, params[1].raw).slice(1, -1)}'`;
+                break;
             case "contains":
                 this.Visit(params[0], context);
                 if (this.options.useParameters) {
