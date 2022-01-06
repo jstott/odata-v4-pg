@@ -66,11 +66,23 @@ await Person
 
 ## NPM package
 Change the version in your package.json or use npm version <new-version>.
-`npm version patch`
+`npm version patch` or `npm version prerelease`
 
 After changing the version number in your package.json, run `npm publish` to publish the new version to NPM.
 
 `npm install` will install the latest version in the NPM repository.
+
+Complete sequence
+
+```
+npm run build
+<commit changes>
+npm version prerelease
+git push
+git push --tags 
+npm publish
+```
+
 
 ## Other
 

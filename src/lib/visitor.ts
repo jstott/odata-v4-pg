@@ -77,14 +77,26 @@ export class PGVisitor extends Visitor {
 	// ensure the first columName is snake_cased, don't touch others as they are json props
 	protected VisitJsonPathExpression(node: Token, context: any) {
 		let regEx = /^[\w]+/;
-		if (regEx.test(node.value)) {
-			let firstColumnMatch = node.value.match(regEx);
+		let val = node.value || node.value.name;
+		if (regEx.test(val)) {
+			let firstColumnMatch = val.match(regEx);
 			if (firstColumnMatch && firstColumnMatch.length > 0) {
-				node.value = node.value.replace(regEx, this.toSnakeCase(firstColumnMatch[0]));
+				let column = firstColumnMatch[0];
+				let colNames = column.split('__');
+				colNames = colNames.map(this.toSnakeCase);
+				if (colNames.length > 0) {     //  this[context.target] += `"${colNames[0]}"."${colNames[1]}"`;
+					let colParsed = '';
+					colNames.forEach(col => {
+						colParsed += `"${col}".`;
+					}); // 
+					column = colParsed.slice(0, -1); // remove the last character '.'
+				}
+				let x = val.replace(regEx, column);
+				val = x;
 			}
 		}
-		this[context.target] += node.value;
-		context.identifier = node.value;
+		this[context.target] += val;
+		context.identifier = val;
 	}
 
 	protected VisitEqualsExpression(node: Token, context: any) {

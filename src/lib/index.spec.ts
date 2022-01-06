@@ -144,6 +144,7 @@ describe('createFilter', () => {
     expect(sql.parameters).toHaveLength(1);
     expect(sql.parameterObject()).toEqual({ 0: 'Pending Customer' });
   });
+  
   it('table-column2', () => {
     let filter = "ticket/status eq 'Pending Customer'";
     let sql = createFilter(filter); // map $filter OData to pgSql statement
@@ -175,7 +176,7 @@ describe('createFilter', () => {
     let filter = `shipto->>'fred' eq 'csonl'`;
     let sql = createFilter(filter); // map $filter OData to pgSql statement
    // console.log(sql.where);
-    expect(sql.where).toEqual(`shipto->>'fred' = :0`);
+    expect(sql.where).toEqual(`"shipto"->>'fred' = :0`);
     expect(sql.parameters).toHaveLength(1);
     expect(sql.parameterObject()).toEqual({ 0: 'csonl' });
   });
@@ -184,7 +185,7 @@ describe('createFilter', () => {
     let filter = `meta->'order'->'shipTo'->>'name' eq 'Kari Driver'`;
     let sql = createFilter(filter); // map $filter OData to pgSql statement
    // console.log(sql.where);
-    expect(sql.where).toEqual(`meta->'order'->'shipTo'->>'name' = :0`);
+    expect(sql.where).toEqual(`"meta"->'order'->'shipTo'->>'name' = :0`);
     expect(sql.parameters).toHaveLength(1);
     expect(sql.parameterObject()).toEqual({ 0: 'Kari Driver' });
   });
@@ -193,19 +194,25 @@ describe('createFilter', () => {
     let filter = `contains(shipto->>'fred', 'csonl')`;
     let sql = createFilter(filter); // map $filter OData to pgSql statement
    // console.log(sql.where);
-   expect(sql.where).toEqual("shipto->>'fred' ~* :0")
+   expect(sql.where).toEqual(`"shipto"->>'fred' ~* :0`)
    expect(sql.parameters).toHaveLength(1);
    expect(sql.parameters[0]).toEqual('csonl');
   });
 
-  it('jsonb contains', () => {
+  it('jsonb contains complex path', () => {
     let filter = `shiptoAddress->'order'->'shipTo'->>'name' eq 'Kari Driver'`;
     let sql = createFilter(filter); // map $filter OData to pgSql statement
    // console.log(sql.where);
-   expect(sql.where).toEqual("shipto_address->'order'->'shipTo'->>'name' = :0")
+   expect(sql.where).toEqual(`"shipto_address"->'order'->'shipTo'->>'name' = :0`)
    expect(sql.parameters).toHaveLength(1);
    expect(sql.parameters[0]).toEqual('Kari Driver');
   });
 
+  it('jsonb contains mixed use OR statement', () => {
+  let filter = `( contains(bmsticket__status,'ari') or contains(shiptoAddress->>'name', 'ari') )`;
+     let sql = createFilter(filter); // map $filter OData to pgSql statement
+     expect(sql.where).toEqual(`("bmsticket"."status" ~* :0 OR "shipto_address"->>'name' ~* :1)`);
+     expect(sql.parameters).toHaveLength(2);
+    });
   // 
 })
