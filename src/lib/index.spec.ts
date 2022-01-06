@@ -180,6 +180,15 @@ describe('createFilter', () => {
     expect(sql.parameterObject()).toEqual({ 0: 'csonl' });
   });
 
+  it('jsonb full path', () => {
+    let filter = `meta->'order'->'shipTo'->>'name' = 'Kari Driver'`;
+    let sql = createFilter(filter); // map $filter OData to pgSql statement
+   // console.log(sql.where);
+    expect(sql.where).toEqual(`meta->'order'->'shipTo'->>'name' = :0`);
+    expect(sql.parameters).toHaveLength(1);
+    expect(sql.parameterObject()).toEqual({ 0: 'Kari Driver' });
+  });
+
   it('jsonb contains', () => {
     let filter = `contains(shipto->>'fred' , 'csonl')`;
     let sql = createFilter(filter); // map $filter OData to pgSql statement
@@ -188,4 +197,6 @@ describe('createFilter', () => {
    expect(sql.parameters).toHaveLength(1);
    expect(sql.parameters[0]).toEqual('csonl');
   });
+
+  // 
 })
