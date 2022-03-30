@@ -1,6 +1,6 @@
 import { PGVisitor as Visitor } from "./visitor";
 import { SQLLang } from "odata-v4-sql";
-import { Token } from "odata-v4-parser/lib/lexer";
+import { Token } from "@jwstott/odata-v4-parser/lib/lexer";
 export interface SqlOptions {
     useParameters?: boolean;
     type?: SQLLang;

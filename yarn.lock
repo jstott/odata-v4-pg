@@ -487,6 +487,11 @@
     "@types/yargs" "^16.0.0"
     "chalk" "^4.0.0"
 
+"@jwstott/odata-v4-parser@^0.1.33-2":
+  "integrity" "sha512-g9Cx6oo7YwEgcAyIFjUetGzfYdTaBhqkU06tsjLRfFUNjzSi15ExwlzwgVSXQQOI0Tg/ESxmpr1ZrPEe602PIg=="
+  "resolved" "https://registry.npmjs.org/@jwstott/odata-v4-parser/-/odata-v4-parser-0.1.33-2.tgz"
+  "version" "0.1.33-2"
+
 "@sinonjs/commons@^1.7.0":
   "integrity" "sha512-xkNcLAn/wZaX14RPlwizcKicDk9G3F8m2nU3L7Ukm5zBgTwiT0wsoFAHx9Jq56fJA1z/7uKGtCRu16sOUCLIHQ=="
   "resolved" "https://registry.npmjs.org/@sinonjs/commons/-/commons-1.8.3.tgz"
@@ -2399,7 +2404,7 @@
     "ajv" "^6.12.6"
     "db-errors" "^0.2.3"
 
-"odata-v4-literal@^0.1.0":
+"odata-v4-literal@^0.1.0", "odata-v4-literal@^0.1.1":
   "integrity" "sha512-xX9IrLywUmFI6In/AgT0Yy0DpBgW/Y7N9Q3iSfbqOjVyE2z8PvWflx9kgPBiCGmpZFw4dG2TKGlVRd2jgD8+vg=="
   "resolved" "https://registry.npmjs.org/odata-v4-literal/-/odata-v4-literal-0.1.1.tgz"
   "version" "0.1.1"
@@ -2408,9 +2413,6 @@
   "integrity" "sha512-EKESasm7rFR+KtRePjvhfoc8FFj2ymSdPuOFFYcWUeuikfAv6nSw+VGuu4UWxcE+ZPoWZU9Wdi6o3cEzvnC1EQ=="
   "resolved" "https://registry.npmjs.org/odata-v4-metadata/-/odata-v4-metadata-0.1.5.tgz"
   "version" "0.1.5"
-
-"odata-v4-parser@@jwstott/odata-v4-parser#v0.1.33-2":
-  "resolved" "file:@jwstott/odata-v4-parser"
 
 "odata-v4-parser@^0.1.13":
   "integrity" "sha512-7ZsqxcMbGAqKSBme0+lul7g9K52RadGYU3WvYwDdduJNfnduSL59w4OEskvEzWHZMcPRqPnD9XtuO7Rpl+B3jA=="

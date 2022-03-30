@@ -1,4 +1,4 @@
-import { Token } from "odata-v4-parser/lib/lexer";
+import { Token } from "@jwstott/odata-v4-parser/lib/lexer";
 import { Literal } from "odata-v4-literal";
 import { SQLLiteral, SQLLang, Visitor } from "odata-v4-sql/lib/visitor";
 import { SqlOptions } from "./index";

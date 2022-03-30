@@ -1,4 +1,4 @@
-import { Token } from "odata-v4-parser/lib/lexer";
+import { Token } from "@jwstott/odata-v4-parser/lib/lexer";
 import { Visitor } from "odata-v4-sql/lib/visitor";
 import { SqlOptions } from "./index";
 export declare class PGVisitor extends Visitor {
