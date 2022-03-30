@@ -158,6 +158,7 @@ export class PGVisitor extends Visitor {
 					this.where += ` ~* :${this.parameters.length - 1}`;
 				} else this.where += ` ~* '${SQLLiteral.convert(params[1].value, params[1].raw).slice(1, -1)}'`;
 				break;
+
 			case "contains":
 				this.Visit(params[0], context);
 				if (this.options.useParameters) {
