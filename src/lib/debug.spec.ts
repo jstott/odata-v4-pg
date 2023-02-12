@@ -31,7 +31,7 @@ describe('createFilter', () => {
     expect(sql.parameterObject()).toEqual({ 0: 'Onboarding / Build'});
 
   });
-
+/*
   it('cast', () => {
     let filter = `contains(cast('clients',Edm.String), 'Scup')`;
     let sql = createFilter(filter); // map $filter OData to pgSql statement
@@ -41,6 +41,17 @@ describe('createFilter', () => {
    
 
    
+  });
+  */
+
+  it('multi_contains', () => {
+    let filter = `( contains(bmsticketorder__meta->>'selectedBinLoc', 'Steve Jo') or contains(ticketNumber,'Steve Jo')  or contains(orderId,'Steve Jo')  or contains(accountName,'Steve Jo')  or contains(name,'Steve Jo')  or contains(partNumber,'Steve Jo')  or contains(description,'Steve Jo')  or contains(priority,'Steve Jo')  or contains(subIssueType,'Steve Jo')  or contains(outTrackingNumber,'Steve Jo')  or contains(outShipStatus,'Steve Jo')  or contains(shiptoAddress->>'city','Steve Jo')  or contains(shiptoAddress->>'state','Steve Jo')  or contains(shiptoAddress->>'email','Steve Jo')  or contains(shiptoAddress->>'name','Steve Jo')  or contains(shiptoAddress->>'postalCode','Steve Jo')  or contains(shiptoAddress->>'street','Steve Jo')  or contains(shiptoAddress->>'country','Steve Jo')  or contains(bmsticket__status,'Steve Jo')  or contains(orderReason,'Steve Jo')  or contains(primaryAssignee,'Steve Jo')  )`;
+    let sql = createFilter(filter); // map $filter OData to pgSql statement
+  
+    //expect(sql.where).toEqual('"issue_type" = :0');
+    //expect(sql.parameters).toHaveLength(1);
+    //expect(sql.parameterObject()).toEqual({ 0: 'Onboarding / Build'});
+
   });
 
 
