@@ -1,6 +1,6 @@
 {
   "name": "@jwstott/odata-v4-pg",
-  "version": "1.0.7",
+  "version": "1.0.8-0",
   "description": "OData to PostgreSQL query compiler",
   "main": "build/lib/index.js",
   "typings": "build/lib/index",
@@ -42,7 +42,6 @@
     "jest": "^27.1.1",
     "knex": "~1.0.4",
     "objection": "3.0.1",
-    
     "odata-v4-server": "rc",
     "pg": "^8.7.1",
     "rimraf": "^3.0.2",
