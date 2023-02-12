@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/jstott/odata-v4-pg#readme",
   "dependencies": {
-    "@jwstott/odata-v4-parser": "^0.1.33-2",
+    "@jwstott/odata-v4-parser": "^0.1.33-4",
     "odata-v4-literal": "^0.1.1",
     "odata-v4-sql": "^0.1.1"
   },
@@ -40,8 +40,9 @@
     "@types/pg": "^8.6.1",
     "config": "^3.3.6",
     "jest": "^27.1.1",
-    "knex": "^0.95.11",
-    "objection": "^2.2.15",
+    "knex": "~1.0.4",
+    "objection": "3.0.1",
+    
     "odata-v4-server": "rc",
     "pg": "^8.7.1",
     "rimraf": "^3.0.2",
