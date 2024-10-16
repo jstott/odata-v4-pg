@@ -8,6 +8,6 @@
     "experimentalDecorators": true,
     "outDir": "build"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/lib/index.spec.ts", "src/lib/debug.spec.ts"],
   "exclude": ["node_modules", "build", "**/*spec.ts", "**/*.d.ts"],
 }

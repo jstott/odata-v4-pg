@@ -25,6 +25,31 @@ class PGVisitor extends visitor_1.Visitor {
             sql += ` OFFSET ${this.skip}`;
         return sql;
     }
+    Visit(node, context) {
+        this.ast = this.ast || node;
+        context = context || { target: "where" };
+        if (node && node.type) {
+            var visitor = this[`Visit${node.type}`];
+            if (visitor) {
+                visitor.call(this, node, context);
+            }
+            else {
+                // IsNullExpression = "IsNullExpression",
+                if (!['IsNullExpression', 'IsNullExpression'].includes(node.type)) {
+                    console.log(`Unhandled node type: ${node.type}`, node);
+                }
+            }
+        }
+        if (node == this.ast) {
+            if (!this.select)
+                this.select = `*`;
+            if (!this.where)
+                this.where = "1 = 1";
+            if (!this.orderby)
+                this.orderby = "1";
+        }
+        return this;
+    }
     VisitExpand(node, context) {
         node.value.items.forEach((item) => {
             let expandPath = item.value.path.raw;
@@ -285,6 +310,14 @@ class PGVisitor extends visitor_1.Visitor {
                 this.where += ")";
                 break;
         }
+    }
+    VisitIsNullExpression(node, context) {
+        this.Visit(node.value, context);
+        this.where += node.value;
+    }
+    VisitIsNullOrEmptyExpression(node, context) {
+        this.Visit(node.value, context);
+        this.where += node.value;
     }
 }
 exports.PGVisitor = PGVisitor;

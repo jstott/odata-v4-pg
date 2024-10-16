@@ -10,6 +10,7 @@ export declare class PGVisitor extends Visitor {
      */
     parameterObject(): any[];
     from(table: string): string;
+    Visit(node: Token, context?: any): this;
     protected VisitExpand(node: Token, context: any): void;
     protected toSnakeCase(str: string): string;
     protected VisitSelectItem(node: Token, context: any): void;
@@ -21,4 +22,6 @@ export declare class PGVisitor extends Visitor {
     protected VisitInExpression(node: Token, context: any): void;
     protected VisitArrayOrObject(node: Token, context: any): void;
     protected VisitMethodCallExpression(node: Token, context: any): void;
+    protected VisitIsNullExpression(node: Token, context: any): void;
+    protected VisitIsNullOrEmptyExpression(node: Token, context: any): void;
 }
