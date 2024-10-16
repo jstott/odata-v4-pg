@@ -30,6 +30,70 @@ In knex.js - Named bindings such as :name are interpreted as values and :name: i
 As such, odata-v4-pg will set placeholders as :0 (index value) for all placeholders.
 This helps alleviate issues for `createDate eq null` statements, that are absent of any placeholders. With named bindings, this does not present a problem.
 
+
+## Samples
+
+**Equality Check**
+
+- `$filter=category eq 'Books'`
+- `$filter=price eq 19.99`
+
+**Inequality Check**
+
+- `$filter=price ne 19.99`
+- `$filter=category ne 'Electronics'`
+
+**Greater Than / Less Than**
+
+- `$filter=price gt 19.99`
+- `$filter=price lt 50.00`
+- `$filter=price ge 19.99`
+- `$filter=price le 50.00`
+
+**Logical Operators**
+
+- `$filter=price gt 19.99 and price lt 50.00`
+- `$filter=category eq 'Books' or category eq 'Electronics'`
+
+**Null Checks**
+
+- `$filter=category is null`
+- `$filter=category is not null`
+- `$filter=category is nullOrEmpty`
+
+**String Functions**
+
+- `$filter=startswith(name, 'A')`
+- `$filter=endswith(name, 'Z')`
+- `$filter=contains(description, 'discount')`
+
+**Arithmetic Operations**
+
+- `$filter=price add 5 eq 24.99`
+- `$filter=price sub 5 eq 14.99`
+- `$filter=price mul 2 eq 39.98`
+- `$filter=price div 2 eq 9.99`
+- `$filter=price mod 5 eq 4.99`
+
+**Date Functions**
+
+- `$filter=date eq 2023-01-01`
+- `$filter=date gt 2023-01-01`
+- `$filter=date lt 2023-12-31`
+
+**Boolean Functions**
+
+- `$filter=isActive eq true`
+- `$filter=isActive eq false`
+
+**Complex Expressions**
+
+- `$filter=(price gt 19.99 and price lt 50.00) or (category eq 'Books' and isActive eq true)`
+- `$filter=(startswith(name, 'A') or endswith(name, 'Z')) and price le 100.00`
+
+
+
+
 ## Potential usage scenarios
 
 - Nest.js & Objection.js (or direct Knex.js) library helper
