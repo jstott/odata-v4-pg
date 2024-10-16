@@ -487,10 +487,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@jwstott/odata-v4-parser@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/@jwstott/odata-v4-parser/-/odata-v4-parser-0.2.0.tgz"
-  integrity sha512-JAqiuev0FJ1rhUHS6J5Mq7mVetAwfYGMoqoFSi5jF1V1OdSY0fjFmnv1rq5/5srzYCAB6zk4p06hicmkIrR94A==
+"@jwstott/odata-v4-parser@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.npmjs.org/@jwstott/odata-v4-parser/-/odata-v4-parser-0.3.0.tgz"
+  integrity sha512-l6ktm9M+dqHVpm4uxMDCLA8eMtgO1fbIkH2uL2AJQAzRhvzhFjFEmVlAzsNBs5ifoSnx0wBQTQaopPMQ/WfnkQ==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
