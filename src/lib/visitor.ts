@@ -302,6 +302,25 @@ export class PGVisitor extends Visitor {
 		}
 	}
 
+	protected VisitIsNotNullExpression(node: Token, context: any) {
+		this.Visit(node.value, context);
+
+		// match any text wrapped in double quotes in node.value property
+		// and convert that string to snake case
+		// for example: "isAssigned" IS NULL should be converted to: "is_assigned" IS NULL
+
+		let regEx = /"([^"]*)"/g;
+		let matches = node.value.match(regEx);
+		if (matches) {
+			matches.forEach(match => {
+				let snakeCaseMatch = this.toSnakeCase(match.replace(/"/g, ''));
+				node.value = node.value.replace(match, `"${snakeCaseMatch}"`);
+			});
+		}
+
+		this.where += node.value;
+	}
+
 	protected VisitIsNullExpression(node: Token, context: any) {
 		this.Visit(node.value, context);
 
@@ -334,6 +353,13 @@ export class PGVisitor extends Visitor {
 		}
 
 		this.where += node.value;
+	}
+
+
+	protected VisitParenExpression(node: Token, context: any) {
+		this.where += "(";
+		this.Visit(node.value, context);
+		this.where += ")";
 	}
 
 	

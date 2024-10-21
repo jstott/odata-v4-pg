@@ -18,10 +18,9 @@ describe('createFilter', () => {
   it('testOdata', () => {
     let filter = "Category__jjj eq 1";
     let sql = createFilter(filter); // map $filter OData to pgSql statement
-    console.log(sql);
-    //expect(sql.where).toEqual('"name" = :0 OR "name" = :1');
-    //expect(sql.parameters).toHaveLength(2);
-    //expect(sql.parameterObject()).toEqual({ 0: 'fred', 1: 'sam' });
+    //console.log(sql.where);
+    
+    expect(sql.where).toEqual(`\"category\".\"jjj\" = :0`);
   });
   it('date between string', () => {
     let filter = "(completedDate gt '2019-09-01' and completedDate lt '2019-10-01')";

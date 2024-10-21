@@ -22,6 +22,8 @@ export declare class PGVisitor extends Visitor {
     protected VisitInExpression(node: Token, context: any): void;
     protected VisitArrayOrObject(node: Token, context: any): void;
     protected VisitMethodCallExpression(node: Token, context: any): void;
+    protected VisitIsNotNullExpression(node: Token, context: any): void;
     protected VisitIsNullExpression(node: Token, context: any): void;
     protected VisitIsNullOrEmptyExpression(node: Token, context: any): void;
+    protected VisitParenExpression(node: Token, context: any): void;
 }
