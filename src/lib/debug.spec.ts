@@ -1,4 +1,3 @@
-
 import { mocked } from 'ts-jest/utils'
 
 import { createFilter } from './index';
@@ -14,6 +13,12 @@ describe('createFilter', () => {
           expect(sql.parameters).toHaveLength(1);
       
         });  */
+  it('vAsset.State is null', () => {
+    let filter = `vAsset__state is null`;
+    let sql = createFilter(filter); // map $filter OData to pgSql statement
+    expect(sql.where).toEqual(`"v_asset"."state" IS NULL`);
+    expect(sql.parameters).toHaveLength(0);
+  });
 
   it('jsonb', () => {
     let filter = `( contains(bmsticket__status,'ari') or contains(shiptoAddress->>'name', 'ari') )`;
