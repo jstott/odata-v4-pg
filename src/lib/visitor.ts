@@ -306,19 +306,37 @@ export class PGVisitor extends Visitor {
 		this.Visit(node.value, context);
 
 		// match any text wrapped in double quotes in node.value property
-		// and convert that string to snake case
-		// for example: "isAssigned" IS NULL should be converted to: "is_assigned" IS NULL
+		// and convert that string to snake case while preserving table.column structure
+		// for example: "vAsset.state" IS NOT NULL should be converted to: "v_asset"."state" IS NOT NULL
 
-		let regEx = /"([^"]*)"/g;
-		let matches = node.value.match(regEx);
-		if (matches) {
-			matches.forEach(match => {
-				let snakeCaseMatch = this.toSnakeCase(match.replace(/"/g, ''));
-				node.value = node.value.replace(match, `"${snakeCaseMatch}"`);
+		let processedValue = node.value;
+		
+		// Handle table.column format (preserve the dot separator)
+		let regEx = /"([^"]*\.[^"]*)"/g;
+		let tableColumnMatches = processedValue.match(regEx);
+		if (tableColumnMatches) {
+			tableColumnMatches.forEach(match => {
+				let cleanMatch = match.replace(/"/g, '');
+				let parts = cleanMatch.split('.');
+				if (parts.length === 2) {
+					let snakeCaseTable = this.toSnakeCase(parts[0]);
+					let snakeCaseColumn = this.toSnakeCase(parts[1]);
+					processedValue = processedValue.replace(match, `"${snakeCaseTable}"."${snakeCaseColumn}"`);
+				}
 			});
+		} else {
+			// Handle single identifiers
+			let regEx = /"([^"]*)"/g;
+			let matches = processedValue.match(regEx);
+			if (matches) {
+				matches.forEach(match => {
+					let snakeCaseMatch = this.toSnakeCase(match.replace(/"/g, ''));
+					processedValue = processedValue.replace(match, `"${snakeCaseMatch}"`);
+				});
+			}
 		}
 
-		this.where += node.value;
+		this.where += processedValue;
 	}
 
 	protected VisitIsNullExpression(node: Token, context: any) {
@@ -362,16 +380,38 @@ export class PGVisitor extends Visitor {
 	protected VisitIsNullOrEmptyExpression(node:Token, context:any){
 		this.Visit(node.value, context);
 
-		let regEx = /"([^"]*)"/g;
-		let matches = node.value.match(regEx);
-		if (matches) {
-			matches.forEach(match => {
-				let snakeCaseMatch = this.toSnakeCase(match.replace(/"/g, ''));
-				node.value = node.value.replace(match, `"${snakeCaseMatch}"`);
+		// match any text wrapped in double quotes in node.value property
+		// and convert that string to snake case while preserving table.column structure
+		// for example: "vAsset.state" IS NULL OR "vAsset.state" = '' should be converted to: "v_asset"."state" IS NULL OR "v_asset"."state" = ''
+
+		let processedValue = node.value;
+		
+		// Handle table.column format (preserve the dot separator)
+		let regEx = /"([^"]*\.[^"]*)"/g;
+		let tableColumnMatches = processedValue.match(regEx);
+		if (tableColumnMatches) {
+			tableColumnMatches.forEach(match => {
+				let cleanMatch = match.replace(/"/g, '');
+				let parts = cleanMatch.split('.');
+				if (parts.length === 2) {
+					let snakeCaseTable = this.toSnakeCase(parts[0]);
+					let snakeCaseColumn = this.toSnakeCase(parts[1]);
+					processedValue = processedValue.replace(match, `"${snakeCaseTable}"."${snakeCaseColumn}"`);
+				}
 			});
+		} else {
+			// Handle single identifiers
+			let regEx = /"([^"]*)"/g;
+			let matches = processedValue.match(regEx);
+			if (matches) {
+				matches.forEach(match => {
+					let snakeCaseMatch = this.toSnakeCase(match.replace(/"/g, ''));
+					processedValue = processedValue.replace(match, `"${snakeCaseMatch}"`);
+				});
+			}
 		}
 
-		this.where += node.value;
+		this.where += processedValue;
 	}
 
 

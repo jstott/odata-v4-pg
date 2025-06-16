@@ -35,7 +35,7 @@ describe('isNullOrEmpty', () => {
         expect(sql.where).toEqual(`( "is_assigned" IS NULL OR "is_assigned" = '' )`);
     });
 
-    it('isNullOrEmpty-categoryName column', () => {
+     it('isNullOrEmpty-categoryName column', () => {
         let filter = `categoryName is nullOrEmpty`;
         let sql = createFilter(filter); // map $filter OData to pgSql statement
        // console.log(sql.where);
@@ -48,4 +48,23 @@ describe('isNullOrEmpty', () => {
         //console.log(sql.where);
         expect(sql.where).toEqual(`("is_assigned" IS NULL OR "is_assigned" = :0)`);
     });
+
+
+    /*************
+     * Table-Column names
+     */
+    
+    it('isNotNull-tableName column', () => {
+        let filter = `vAsset__state is not null`;
+        let sql = createFilter(filter); // map $filter OData to pgSql statement
+        expect(sql.where).toEqual(`"v_asset"."state" IS NOT NULL`);
+    });
+
+        it('isNullOrEmpty--tableName column', () => {
+        let filter = `vAsset__state is nullOrEmpty`;
+        let sql = createFilter(filter); // map $filter OData to pgSql statement
+        expect(sql.where).toEqual(`( "v_asset"."state" IS NULL OR "v_asset"."state" = '' )`);
+    });
+
+    
 });
