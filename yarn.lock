@@ -487,11 +487,6 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@jwstott/odata-v4-parser@^0.3.3":
-  version "0.3.3"
-  resolved "https://registry.npmjs.org/@jwstott/odata-v4-parser/-/odata-v4-parser-0.3.3.tgz"
-  integrity sha512-nH7EElr1Fyhk+jYbH/s1Fe9d7oqpCbqRALN2aMPwzeo5R3cfkafoSypB3jKVe9a1rRAxMTD8rM1zzyHdEyqPUw==
-
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
   resolved "https://registry.npmjs.org/@sinonjs/commons/-/commons-1.8.3.tgz"
