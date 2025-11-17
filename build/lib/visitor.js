@@ -280,12 +280,12 @@ class PGVisitor extends visitor_1.Visitor {
                 this.where += ")";
                 break;
             case "tolower":
-                this.where += "LCASE(";
+                this.where += "UPPER(";
                 this.Visit(params[0], context);
                 this.where += ")";
                 break;
             case "toupper":
-                this.where += "UCASE(";
+                this.where += "UPPER(";
                 this.Visit(params[0], context);
                 this.where += ")";
                 break;
