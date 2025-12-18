@@ -87,6 +87,13 @@ describe('createFilter', () => {
     expect(sql.parameters).toHaveLength(1);
     expect(sql.parameters[0]).toEqual('Cus');
   });
+  it('contains with non-alphanumeric characters', () => {
+    let filter = "contains(name,'PO # 5')";
+    let sql = createFilter(filter);
+    expect(sql.where).toEqual('"name" ~* :0')
+    expect(sql.parameters).toHaveLength(1);
+    expect(sql.parameters[0]).toEqual('PO # 5');
+  });
   it('geography', () => {
     let filter = `geography`;
     let sql = createFilter(filter);

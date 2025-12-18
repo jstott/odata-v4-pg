@@ -22,6 +22,9 @@ const filters = [
     
     // Test multiple OR conditions
     "(contains(asset__category,'Camera') or asset__state eq 'Expired' or asset__state eq 'Active')",
+
+    // Test non-alphanumeric characters in search
+    "contains(name,'PO # 5')",
     
     // Test complex nested conditions
     "((contains(asset__category,'Camera') or contains(asset__category,'Lens')) and (asset__state eq 'Expired' or asset__state eq 'Active'))"
